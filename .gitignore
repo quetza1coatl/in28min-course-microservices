@@ -2,8 +2,8 @@ HELP.md
 target/
 .mvn
 
-
-
+#local config repository
+git-localconfig-repo
 ### IntelliJ IDEA ###
 .idea
 *.iws
