@@ -13,6 +13,13 @@ import java.util.Map;
 @RestController
 public class CurrencyConversionController {
 
+    private final CurrencyExchangeProxy proxy;
+
+    public CurrencyConversionController(CurrencyExchangeProxy proxy) {
+        this.proxy = proxy;
+    }
+
+
     @GetMapping("/currency-conversion/from/{from}/to/{to}/quantity/{quantity}")
     public CurrencyConversion calculateCurrencyConversion(
             @PathVariable String from,
@@ -28,6 +35,22 @@ public class CurrencyConversionController {
                         CurrencyConversion.class,
                         uriVariables);
         CurrencyConversion entity = responseEntity.getBody();
+        return new CurrencyConversion(
+                entity.getId(),
+                from, to, quantity,
+                entity.getConversionMultiple(),
+                quantity.multiply(entity.getConversionMultiple()),
+                entity.getEnvironment());
+
+    }
+
+    @GetMapping("/currency-conversion-feign/from/{from}/to/{to}/quantity/{quantity}")
+    public CurrencyConversion calculateCurrencyConversionFeign(
+            @PathVariable String from,
+            @PathVariable String to,
+            @PathVariable BigDecimal quantity
+    ){
+        CurrencyConversion entity = proxy.retrieveExchangeValue(from, to);
         return new CurrencyConversion(
                 entity.getId(),
                 from, to, quantity,
