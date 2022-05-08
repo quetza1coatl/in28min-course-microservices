@@ -1,6 +1,7 @@
 package com.quetzalcoatl.microservices.currencyexchangeservice;
 
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
 import io.github.resilience4j.retry.annotation.Retry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,5 +27,17 @@ public class CircuitBreakerController {
     public String hardcodedResponse(Exception e){
         logger.info("Fallback method is called after exception - {}", e.getClass());
         return "fallback-response";
+    }
+
+    @GetMapping("/limit")
+    @RateLimiter(name = "default")
+    public String limitedCalls(){
+        return "Limited calls";
+    }
+
+    @GetMapping("/bulkhead")
+    @RateLimiter(name = "default")
+    public String bulkHead(){
+        return "bulkhead";
     }
 }
