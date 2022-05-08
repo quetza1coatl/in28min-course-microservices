@@ -56,7 +56,7 @@ public class CurrencyConversionController {
                 from, to, quantity,
                 entity.getConversionMultiple(),
                 quantity.multiply(entity.getConversionMultiple()),
-                entity.getEnvironment());
+                entity.getEnvironment() + " feign");
 
     }
 }
