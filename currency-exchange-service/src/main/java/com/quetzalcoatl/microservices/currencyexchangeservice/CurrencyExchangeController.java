@@ -1,5 +1,7 @@
 package com.quetzalcoatl.microservices.currencyexchangeservice;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,6 +13,7 @@ import java.math.BigDecimal;
 
 @RestController
 public class CurrencyExchangeController {
+    private final Logger logger = LoggerFactory.getLogger(CurrencyExchangeController.class);
     private final Environment environment;
     private final CurrencyExchangeRepository repository;
 
@@ -24,6 +27,7 @@ public class CurrencyExchangeController {
             @PathVariable String from,
             @PathVariable String to
     ){
+        logger.info("retrieve exchange values with params from={}, to={}", from, to);
         CurrencyExchange currencyExchange = repository.findByFromAndTo(from, to);
         if(currencyExchange == null){
             throw new ResponseStatusException(
