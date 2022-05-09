@@ -1,0 +1,12 @@
+version: '2'
+services:
+  currency-exchange:
+    image: quetza1coat1/currency-exchange-service:0.0.1-SNAPSHOT
+    mem_limit: 700m
+    ports:
+      - "8000:8000"
+    networks:
+      - currency-network
+
+networks:
+  currency-network:
