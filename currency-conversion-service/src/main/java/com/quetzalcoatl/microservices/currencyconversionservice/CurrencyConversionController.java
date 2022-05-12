@@ -1,5 +1,7 @@
 package com.quetzalcoatl.microservices.currencyconversionservice;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,7 +14,7 @@ import java.util.Map;
 
 @RestController
 public class CurrencyConversionController {
-
+    private final Logger logger = LoggerFactory.getLogger(CurrencyConversionController.class);
     private final CurrencyExchangeProxy proxy;
 
     public CurrencyConversionController(CurrencyExchangeProxy proxy) {
@@ -26,6 +28,9 @@ public class CurrencyConversionController {
             @PathVariable String to,
             @PathVariable BigDecimal quantity
     ){
+        //CHANGE-KUBERNETES
+        logger.info("calculateCurrencyConversion called with {} to {} with {}", from, to, quantity);
+
         Map<String, String > uriVariables = new HashMap<>();
         uriVariables.put("from", from);
         uriVariables.put("to", to);
@@ -50,6 +55,8 @@ public class CurrencyConversionController {
             @PathVariable String to,
             @PathVariable BigDecimal quantity
     ){
+        //CHANGE-KUBERNETES
+        logger.info("calculateCurrencyConversionFeign called with {} to {} with {}", from, to, quantity);
         CurrencyConversion entity = proxy.retrieveExchangeValue(from, to);
         return new CurrencyConversion(
                 entity.getId(),
